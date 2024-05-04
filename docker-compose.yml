@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  web:
+    container_name: django_container
+    restart: always
+    build: .
+    entrypoint: ./docker-entrypoint.sh
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000" # change the first port if you want to run on other ports
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    container_name: db_container
+    restart: always
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Secreat@098
+      - POSTGRES_DB=customer
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
